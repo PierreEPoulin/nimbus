@@ -1,0 +1,12 @@
+.tableaux__wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This makes the video cover the available space, clipping it as needed */
+}
+
+/* TEST */
+.plyr__video-wrapper video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover; /* This makes the video cover the available space, clipping it as needed */
+}/*# sourceMappingURL=home-dropboxvideo.css.map */

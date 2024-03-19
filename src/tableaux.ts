@@ -1,14 +1,17 @@
 export type TableauItem = {
     className: string;
     audioStartUrl: string | undefined;
-    howlStart: Howl | undefined;
+    audioStart: Howl | undefined;
 };
+
+
+const TABLEAU_CLASS: string = 'tableaux__wrapper';
 
 export class Tableau {
     items: TableauItem[] = [];
 
-    constructor(parentClass: string) {
-        this.buildStack(parentClass);
+    constructor() {
+        this.buildStack();
     }
 
     private shuffleArray(array: TableauItem[]): TableauItem[] {
@@ -19,8 +22,11 @@ export class Tableau {
         return array;
     }
 
-    private buildStack(parentClass: string): void {
+    private buildStack(): void {
+
         console.log("Building MIR stack");
+
+        const parentClass = TABLEAU_CLASS;
 
         const parentElement: HTMLElement | null = document.querySelector(`.${parentClass}`);
         if (!parentElement) {
@@ -30,12 +36,18 @@ export class Tableau {
 
         const children: HTMLCollection = parentElement.children;
         let items: TableauItem[] = [];
-        const maxItems: number = 100;
+        const MAX_ITEMS: number = 100;
 
-        Array.from(children).slice(0, maxItems).forEach((child: Element) => {
+        Array.from(children).slice(0, MAX_ITEMS).forEach((child: Element) => {
             const className: string = child.classList[0] || "";
             let audioUrl: string | undefined = undefined; // Default to undefined
             let howl: Howl | undefined = undefined;
+
+            // Constrain items by count, if desired for testing
+            if(items.length >= MAX_ITEMS) return;
+
+            // Constrain items by type, if desired for testing
+            if(!className.startsWith('in')) return;
 
             // Check for the custom attribute 'mir-audio-start'
             if (child.hasAttribute('mir-audio-start')) {
@@ -58,7 +70,7 @@ export class Tableau {
                 }
             }
         
-            items.push({ className, audioStartUrl: audioUrl, howlStart: howl });
+            items.push({ className, audioStartUrl: audioUrl, audioStart: howl });
         });
                 
         // Array.from(children).slice(0, maxItems).forEach((child: Element) => {
@@ -74,6 +86,11 @@ export class Tableau {
     }
 
     pop(): TableauItem | undefined {
+
+        // Rebuild stack if empty
+        if (this.items.length == 0)
+            this.buildStack();
+
         return this.items.pop();
     }
 }

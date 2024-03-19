@@ -1,9 +1,10 @@
 (() => {
   // src/tableaux.ts
+  var TABLEAU_CLASS = "tableaux__wrapper";
   var Tableau = class {
-    constructor(parentClass) {
+    constructor() {
       this.items = [];
-      this.buildStack(parentClass);
+      this.buildStack();
     }
     shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -12,8 +13,9 @@
       }
       return array;
     }
-    buildStack(parentClass) {
+    buildStack() {
       console.log("Building MIR stack");
+      const parentClass = TABLEAU_CLASS;
       const parentElement = document.querySelector(`.${parentClass}`);
       if (!parentElement) {
         console.error("Parent element not found");
@@ -21,11 +23,15 @@
       }
       const children = parentElement.children;
       let items = [];
-      const maxItems = 100;
-      Array.from(children).slice(0, maxItems).forEach((child) => {
+      const MAX_ITEMS = 100;
+      Array.from(children).slice(0, MAX_ITEMS).forEach((child) => {
         const className = child.classList[0] || "";
         let audioUrl = void 0;
         let howl = void 0;
+        if (items.length >= MAX_ITEMS)
+          return;
+        if (!className.startsWith("in"))
+          return;
         if (child.hasAttribute("mir-audio-start")) {
           audioUrl = child.getAttribute("mir-audio-start") || void 0;
           if (audioUrl) {
@@ -44,12 +50,14 @@
             });
           }
         }
-        items.push({ className, audioStartUrl: audioUrl, howlStart: howl });
+        items.push({ className, audioStartUrl: audioUrl, audioStart: howl });
       });
       this.items = this.shuffleArray(items);
       console.log(this.items);
     }
     pop() {
+      if (this.items.length == 0)
+        this.buildStack();
       return this.items.pop();
     }
   };
@@ -4247,12 +4255,12 @@
   var TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
   // src/page/home-bgvideo.ts
-  var Home1Page = class {
+  var Home_BgVideo = class {
     constructor() {
     }
     init() {
-      console.log("Home / Background Video page init.");
-      const classStack = new Tableau("tableaux__wrapper");
+      console.log("Home / BgVideo - page init.");
+      const tableaux = new Tableau();
       const makeItRainState = {
         isActive: false
       };
@@ -4261,22 +4269,71 @@
           console.log("Exiting makeItRain state");
           const elements = document.querySelectorAll(`.${makeItRainState.currentItem.className}`);
           gsapWithCSS.to(elements, { display: "none" });
-          if (makeItRainState.currentItem.howlStart) {
-            makeItRainState.currentItem.howlStart.stop();
+          if (makeItRainState.currentItem.audioStart) {
+            makeItRainState.currentItem.audioStart.stop();
           }
           makeItRainState.isActive = false;
         } else {
           console.log("Entering makeItRain state");
-          const item = classStack.pop();
+          const item = tableaux.pop();
           if (!item) {
             console.log("No more classes to toggle.");
             return;
           }
           makeItRainState.isActive = true;
           makeItRainState.currentItem = item;
-          if (item.howlStart) {
-            item.howlStart.seek(0);
-            item.howlStart.play();
+          if (item.audioStart) {
+            item.audioStart.seek(0);
+            item.audioStart.play();
+          }
+          const elements = document.querySelectorAll(`.${item.className}`);
+          console.log("Making elements visible", elements);
+          gsapWithCSS.to(elements, { display: "block" });
+        }
+      });
+    }
+  };
+
+  // src/page/home-dropboxvideo.ts
+  var Home_DropboxVideo = class {
+    constructor() {
+    }
+    init() {
+      console.log("Home / DropboxVideo - page init.");
+      const tableaux = new Tableau();
+      const makeItRainState = {
+        isActive: false
+      };
+      document.querySelector(".bt__makeitrain")?.addEventListener("click", function() {
+        if (makeItRainState.isActive && makeItRainState.currentItem) {
+          console.log("Exiting makeItRain state");
+          const elements = document.querySelectorAll(`.${makeItRainState.currentItem.className}`);
+          gsapWithCSS.to(elements, { display: "none" });
+          const video = document.querySelector(`.${makeItRainState.currentItem.className} video`);
+          if (video) {
+            video.pause();
+            video.currentTime = 0;
+          }
+          if (makeItRainState.currentItem.audioStart) {
+            makeItRainState.currentItem.audioStart.stop();
+          }
+          makeItRainState.isActive = false;
+        } else {
+          console.log("Entering makeItRain state");
+          const item = tableaux.pop();
+          if (!item) {
+            console.log("No more classes to toggle.");
+            return;
+          }
+          makeItRainState.isActive = true;
+          makeItRainState.currentItem = item;
+          if (item.audioStart) {
+            item.audioStart.seek(0);
+            item.audioStart.play();
+          }
+          const video = document.querySelector(`.${makeItRainState.currentItem.className} video`);
+          if (video) {
+            video.play();
           }
           const elements = document.querySelectorAll(`.${item.className}`);
           console.log("Making elements visible", elements);
@@ -4324,7 +4381,13 @@
     var routeDispatcher = new RouteDispatcher();
     routeDispatcher.routes = {
       "/home-1": () => {
-        new Home1Page().init();
+        new Home_BgVideo().init();
+      },
+      "/home-2": () => {
+        new Home_DropboxVideo().init();
+      },
+      "/home-3": () => {
+        new Home_DropboxVideo().init();
       }
     };
     routeDispatcher.dispatchRoute();

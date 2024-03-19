@@ -4,7 +4,8 @@
  * 
  */
 
-import { Home1Page } from "./page/home-bgvideo";
+import { Home_BgVideo } from "./page/home-bgvideo";
+import { Home_DropboxVideo } from "./page/home-dropboxvideo";
 import { RouteDispatcher } from "./routeDispatcher";
 
 // Global vars
@@ -34,9 +35,19 @@ const init = () => {
 
     var routeDispatcher = new RouteDispatcher();
     routeDispatcher.routes = {
-        '/home-1': () => {
+        '/home-1': () => { // Background Videos
 
-            (new Home1Page()).init();
+            (new Home_BgVideo()).init();
+
+        },
+        '/home-2': () => { // Dropbox
+
+            (new Home_DropboxVideo()).init();
+
+        }, 
+        '/home-3': () => { // Vimeo 
+
+            (new Home_DropboxVideo()).init();
 
         }
     };
