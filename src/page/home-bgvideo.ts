@@ -7,7 +7,7 @@ import { TableauItem, Tableau } from "../tableaux";
 import gsap from 'gsap'; 
  
 
-export class Home1Page {
+export class Home_BgVideo {
 
 //  modelDropdown: WebflowDropdown; 
 
@@ -16,10 +16,10 @@ export class Home1Page {
   
   init() {
 
-    console.log("Home / Background Video page init."); 
+    console.log("Home / BgVideo - page init."); 
 
     // Create class stack
-    const classStack = new Tableau('tableaux__wrapper');
+    const tableaux = new Tableau('tableaux__wrapper');
 
     // Make It Rain functionality
     type MakeItRainState = {
@@ -45,7 +45,7 @@ export class Home1Page {
 
       } else {
         console.log("Entering makeItRain state");
-        const item = classStack.pop();
+        const item = tableaux.pop();
         if (!item) {
           console.log("No more classes to toggle.");
           return;
