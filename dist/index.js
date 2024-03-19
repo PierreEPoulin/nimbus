@@ -30,8 +30,6 @@
         let howl = void 0;
         if (items.length >= MAX_ITEMS)
           return;
-        if (!className.startsWith("in"))
-          return;
         if (child.hasAttribute("mir-audio-start")) {
           audioUrl = child.getAttribute("mir-audio-start") || void 0;
           if (audioUrl) {
@@ -4294,12 +4292,12 @@
     }
   };
 
-  // src/page/home-dropboxvideo.ts
-  var Home_DropboxVideo = class {
+  // src/page/home-externalvideo.ts
+  var Home_ExternalVideo = class {
     constructor() {
     }
     init() {
-      console.log("Home / DropboxVideo - page init.");
+      console.log("Home / ExternalVideo - page init.");
       const tableaux = new Tableau();
       const makeItRainState = {
         isActive: false
@@ -4384,10 +4382,10 @@
         new Home_BgVideo().init();
       },
       "/home-2": () => {
-        new Home_DropboxVideo().init();
+        new Home_ExternalVideo().init();
       },
       "/home-3": () => {
-        new Home_DropboxVideo().init();
+        new Home_ExternalVideo().init();
       }
     };
     routeDispatcher.dispatchRoute();

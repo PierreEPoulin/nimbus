@@ -5,7 +5,7 @@
  */
 
 import { Home_BgVideo } from "./page/home-bgvideo";
-import { Home_DropboxVideo as Home_ExternalVideo } from "./page/home-dropboxvideo";
+import { Home_ExternalVideo } from "./page/home-externalvideo";
 import { RouteDispatcher } from "./routeDispatcher";
 
 // Global vars

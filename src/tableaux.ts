@@ -47,7 +47,7 @@ export class Tableau {
             if(items.length >= MAX_ITEMS) return;
 
             // Constrain items by type, if desired for testing
-            if(!className.startsWith('in')) return;
+//            if(!className.startsWith('in')) return; 
 
             // Check for the custom attribute 'mir-audio-start'
             if (child.hasAttribute('mir-audio-start')) {

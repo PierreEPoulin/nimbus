@@ -1,20 +1,20 @@
 
 /*
- * Page | Home | Dropbox Video 
+ * Page | Home | External Video 
  */
 
 import { TableauItem, Tableau } from "../tableaux";
 import gsap from 'gsap'; 
  
 
-export class Home_DropboxVideo {
+export class Home_ExternalVideo {
 
   constructor() {
   }
   
   init() {
 
-    console.log("Home / DropboxVideo - page init."); 
+    console.log("Home / ExternalVideo - page init."); 
 
     // Create class stack
     const tableaux = new Tableau();

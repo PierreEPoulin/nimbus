@@ -30,8 +30,6 @@
         let howl = void 0;
         if (items.length >= MAX_ITEMS)
           return;
-        if (!className.startsWith("in"))
-          return;
         if (child.hasAttribute("mir-audio-start")) {
           audioUrl = child.getAttribute("mir-audio-start") || void 0;
           if (audioUrl) {
