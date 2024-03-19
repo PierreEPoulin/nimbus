@@ -5,7 +5,7 @@
  */
 
 import { Home_BgVideo } from "./page/home-bgvideo";
-import { Home_DropboxVideo } from "./page/home-dropboxvideo";
+import { Home_DropboxVideo as Home_ExternalVideo } from "./page/home-dropboxvideo";
 import { RouteDispatcher } from "./routeDispatcher";
 
 // Global vars
@@ -42,12 +42,12 @@ const init = () => {
         },
         '/home-2': () => { // Dropbox
 
-            (new Home_DropboxVideo()).init();
+            (new Home_ExternalVideo()).init();
 
         }, 
         '/home-3': () => { // Vimeo 
 
-            (new Home_DropboxVideo()).init();
+            (new Home_ExternalVideo()).init();
 
         }
     };
