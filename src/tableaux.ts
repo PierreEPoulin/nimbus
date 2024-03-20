@@ -46,13 +46,29 @@ export class Tableau {
             // Constrain items by count, if desired for testing
             if(items.length >= MAX_ITEMS) return;
 
+            const mirBreakpoint = child.getAttribute('mir-breakpoint');
+            const isDesktopOrTablet = window.innerWidth >= 992; // Example breakpoint for desktop/tablet
+            const isMobile = window.innerWidth < 992; // Example breakpoint for mobile
+          
+            if ((mirBreakpoint === 'desktop' && !isDesktopOrTablet) || 
+                (mirBreakpoint === 'mobile' && !isMobile)) {
+                    console.log("skipped", child, className); 
+              return; // Skip adding this item
+            }
+
             // Constrain items by type, if desired for testing
 //            if(!className.startsWith('in')) return; 
+            // if (child.hasAttribute('mir-breakpoint')) {
+
+            // }
+
+
 
             // Check for the custom attribute 'mir-audio-start'
             if (child.hasAttribute('mir-audio-start')) {
                 audioUrl = child.getAttribute('mir-audio-start') || undefined;
 
+                // If an audio is specified, preload it
                 if(audioUrl) { 
                     howl = new Howl({
                         src: [audioUrl],
@@ -60,11 +76,10 @@ export class Tableau {
                         preload: true,
                         rate: 5,
                         onload: function () {
-                            console.log("Make it rain sound preloaded successfully!");
                             (howl as Howl).rate(1);
                         },
                         onloaderror: function (error) {
-                            console.error("Error loading make it rain sound:", error);
+                            console.error("Error loading audio start:", audioUrl, error);
                         }
                     });
                 }

@@ -30,6 +30,13 @@
         let howl = void 0;
         if (items.length >= MAX_ITEMS)
           return;
+        const mirBreakpoint = child.getAttribute("mir-breakpoint");
+        const isDesktopOrTablet = window.innerWidth >= 992;
+        const isMobile = window.innerWidth < 992;
+        if (mirBreakpoint === "desktop" && !isDesktopOrTablet || mirBreakpoint === "mobile" && !isMobile) {
+          console.log("skipped", child, className);
+          return;
+        }
         if (child.hasAttribute("mir-audio-start")) {
           audioUrl = child.getAttribute("mir-audio-start") || void 0;
           if (audioUrl) {
@@ -39,11 +46,10 @@
               preload: true,
               rate: 5,
               onload: function() {
-                console.log("Make it rain sound preloaded successfully!");
                 howl.rate(1);
               },
               onloaderror: function(error) {
-                console.error("Error loading make it rain sound:", error);
+                console.error("Error loading audio start:", audioUrl, error);
               }
             });
           }
@@ -4296,21 +4302,26 @@
   var Home_ExternalVideo = class {
     constructor() {
     }
+    getVideoElement(tableauItemElement) {
+      let video = null;
+      if (!video)
+        tableauItemElement.querySelector("video");
+      return video;
+    }
     init() {
       console.log("Home / ExternalVideo - page init.");
       const tableaux = new Tableau();
       const makeItRainState = {
         isActive: false
       };
-      document.querySelector(".bt__makeitrain")?.addEventListener("click", function() {
+      document.querySelector(".bt__makeitrain")?.addEventListener("click", () => {
         if (makeItRainState.isActive && makeItRainState.currentItem) {
           console.log("Exiting makeItRain state");
           const elements = document.querySelectorAll(`.${makeItRainState.currentItem.className}`);
           gsapWithCSS.to(elements, { display: "none" });
-          const video = document.querySelector(`.${makeItRainState.currentItem.className} video`);
-          if (video) {
-            video.pause();
-            video.currentTime = 0;
+          if (makeItRainState.video) {
+            makeItRainState.video.pause();
+            makeItRainState.video.currentTime = 0;
           }
           if (makeItRainState.currentItem.audioStart) {
             makeItRainState.currentItem.audioStart.stop();
@@ -4329,7 +4340,12 @@
             item.audioStart.seek(0);
             item.audioStart.play();
           }
-          const video = document.querySelector(`.${makeItRainState.currentItem.className} video`);
+          const tableauItemElement = document.querySelector(`.${makeItRainState.currentItem.className}`);
+          if (!tableauItemElement)
+            return;
+          const video = this.getVideoElement(
+            tableauItemElement
+          );
           if (video) {
             video.play();
           }

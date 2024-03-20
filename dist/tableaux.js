@@ -30,6 +30,13 @@
         let howl = void 0;
         if (items.length >= MAX_ITEMS)
           return;
+        const mirBreakpoint = child.getAttribute("mir-breakpoint");
+        const isDesktopOrTablet = window.innerWidth >= 992;
+        const isMobile = window.innerWidth < 992;
+        if (mirBreakpoint === "desktop" && !isDesktopOrTablet || mirBreakpoint === "mobile" && !isMobile) {
+          console.log("skipped", child, className);
+          return;
+        }
         if (child.hasAttribute("mir-audio-start")) {
           audioUrl = child.getAttribute("mir-audio-start") || void 0;
           if (audioUrl) {
@@ -39,11 +46,10 @@
               preload: true,
               rate: 5,
               onload: function() {
-                console.log("Make it rain sound preloaded successfully!");
                 howl.rate(1);
               },
               onloaderror: function(error) {
-                console.error("Error loading make it rain sound:", error);
+                console.error("Error loading audio start:", audioUrl, error);
               }
             });
           }
