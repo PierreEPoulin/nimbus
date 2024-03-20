@@ -24,7 +24,9 @@ export class Home_ExternalVideo {
 
     // Get default video, if exists
     if(!video)
-      tableauItemElement.querySelector("video");
+      video = tableauItemElement.querySelector("video");
+
+//console.log(video, tableauItemElement);
 
     // Video may still be null here
     // e.g. an Interactive tableaux item 
@@ -87,24 +89,32 @@ export class Home_ExternalVideo {
           console.log("No more classes to toggle.");
           return;
         }
-       
+
+        // Get item
+        const tableauItemElement: HTMLElement | null = document.querySelector(`.${item.className}`);
+        if(!tableauItemElement) return; 
+        
+        // Save MIR state
         makeItRainState.isActive = true;
         makeItRainState.currentItem = item;
 
         if(item.audioStart) {
+          console.log("playing audio")
           item.audioStart.seek(0);
           item.audioStart.play(); 
         }
 
         // Play the video
-//        const video: HTMLVideoElement | null = document.querySelector(`.${makeItRainState.currentItem.className} video`);
-        const tableauItemElement: HTMLElement | null = document.querySelector(`.${makeItRainState.currentItem.className}`);
-        if(!tableauItemElement) return; 
         const video: HTMLVideoElement | null = this.getVideoElement( 
           tableauItemElement 
           );
         if (video) {
+          // https://developer.chrome.com/blog/play-request-was-interrupted
+          console.log("playing video");
           video.play();
+
+          // Save as currently playing video so it can be stopped
+          makeItRainState.video = video;
         }
 
         const elements: NodeListOf<Element> = document.querySelectorAll(`.${item.className}`);

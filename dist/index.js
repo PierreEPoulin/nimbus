@@ -4305,7 +4305,7 @@
     getVideoElement(tableauItemElement) {
       let video = null;
       if (!video)
-        tableauItemElement.querySelector("video");
+        video = tableauItemElement.querySelector("video");
       return video;
     }
     init() {
@@ -4334,20 +4334,23 @@
             console.log("No more classes to toggle.");
             return;
           }
+          const tableauItemElement = document.querySelector(`.${item.className}`);
+          if (!tableauItemElement)
+            return;
           makeItRainState.isActive = true;
           makeItRainState.currentItem = item;
           if (item.audioStart) {
+            console.log("playing audio");
             item.audioStart.seek(0);
             item.audioStart.play();
           }
-          const tableauItemElement = document.querySelector(`.${makeItRainState.currentItem.className}`);
-          if (!tableauItemElement)
-            return;
           const video = this.getVideoElement(
             tableauItemElement
           );
           if (video) {
+            console.log("playing video");
             video.play();
+            makeItRainState.video = video;
           }
           const elements = document.querySelectorAll(`.${item.className}`);
           console.log("Making elements visible", elements);
