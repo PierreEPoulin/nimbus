@@ -4324,7 +4324,6 @@
             gsapWithCSS.to(elements, { display: "none" });
             if (makeItRainState.video) {
               makeItRainState.video.pause();
-              makeItRainState.video.currentTime = 0;
             }
             if (makeItRainState.currentItem.audioStart) {
               makeItRainState.currentItem.audioStart.stop();

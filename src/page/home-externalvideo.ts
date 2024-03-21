@@ -67,7 +67,7 @@ export class Home_ExternalVideo {
           // Stop any playing video
           if (makeItRainState.video) {
             makeItRainState.video.pause();
-            makeItRainState.video.currentTime = 0; 
+//            makeItRainState.video.currentTime = 0; 
           }
 
           // Stop any playing audio
