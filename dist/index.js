@@ -44,6 +44,7 @@
               src: [audioUrl],
               autoplay: false,
               preload: true,
+              loop: true,
               rate: 5,
               onload: function() {
                 howl.rate(1);
@@ -4314,48 +4315,56 @@
       const makeItRainState = {
         isActive: false
       };
-      document.querySelector(".bt__makeitrain")?.addEventListener("click", () => {
-        if (makeItRainState.isActive && makeItRainState.currentItem) {
-          console.log("Exiting makeItRain state");
-          const elements = document.querySelectorAll(`.${makeItRainState.currentItem.className}`);
-          gsapWithCSS.to(elements, { display: "none" });
-          if (makeItRainState.video) {
-            makeItRainState.video.pause();
-            makeItRainState.video.currentTime = 0;
+      document.querySelectorAll('[mir-action="toggle"]').forEach((element) => {
+        element.addEventListener("click", () => {
+          if (makeItRainState.isActive && makeItRainState.currentItem) {
+            console.log("Exiting makeItRain state");
+            makeItRainState.isActive = false;
+            const elements = document.querySelectorAll(`.${makeItRainState.currentItem.className}`);
+            gsapWithCSS.to(elements, { display: "none" });
+            if (makeItRainState.video) {
+              makeItRainState.video.pause();
+              makeItRainState.video.currentTime = 0;
+            }
+            if (makeItRainState.currentItem.audioStart) {
+              makeItRainState.currentItem.audioStart.stop();
+            }
+            document.querySelectorAll('a[mir-item-trigger="toggle"]').forEach((triggerBtn) => {
+              triggerBtn.click();
+            });
+          } else {
+            console.log("Entering makeItRain state");
+            const item = tableaux.pop();
+            if (!item) {
+              console.log("No more classes to toggle.");
+              return;
+            }
+            const tableauItemElement = document.querySelector(`.${item.className}`);
+            if (!tableauItemElement)
+              return;
+            makeItRainState.isActive = true;
+            makeItRainState.currentItem = item;
+            if (item.audioStart) {
+              console.log("playing audio");
+              item.audioStart.seek(0);
+              item.audioStart.play();
+            }
+            const video = this.getVideoElement(
+              tableauItemElement
+            );
+            if (video) {
+              console.log("playing video");
+              video.play();
+              makeItRainState.video = video;
+            }
+            const elements = document.querySelectorAll(`.${item.className}`);
+            console.log("Making elements visible", elements);
+            gsapWithCSS.to(elements, { display: "block" });
+            document.querySelectorAll('a[mir-item-trigger="toggle"]').forEach((triggerBtn) => {
+              triggerBtn.click();
+            });
           }
-          if (makeItRainState.currentItem.audioStart) {
-            makeItRainState.currentItem.audioStart.stop();
-          }
-          makeItRainState.isActive = false;
-        } else {
-          console.log("Entering makeItRain state");
-          const item = tableaux.pop();
-          if (!item) {
-            console.log("No more classes to toggle.");
-            return;
-          }
-          const tableauItemElement = document.querySelector(`.${item.className}`);
-          if (!tableauItemElement)
-            return;
-          makeItRainState.isActive = true;
-          makeItRainState.currentItem = item;
-          if (item.audioStart) {
-            console.log("playing audio");
-            item.audioStart.seek(0);
-            item.audioStart.play();
-          }
-          const video = this.getVideoElement(
-            tableauItemElement
-          );
-          if (video) {
-            console.log("playing video");
-            video.play();
-            makeItRainState.video = video;
-          }
-          const elements = document.querySelectorAll(`.${item.className}`);
-          console.log("Making elements visible", elements);
-          gsapWithCSS.to(elements, { display: "block" });
-        }
+        });
       });
     }
   };
@@ -4390,20 +4399,20 @@
 
   // src/index.ts
   var SITE_NAME = "Nimbus";
-  var VERSION = "v0.1.1";
+  var VERSION = "v0.1.2";
   window[SITE_NAME] = window[SITE_NAME] || {};
   var Site = window[SITE_NAME];
   var init4 = () => {
     console.log(`${SITE_NAME} package init ${VERSION}`);
     var routeDispatcher = new RouteDispatcher();
     routeDispatcher.routes = {
+      "/": () => {
+        new Home_ExternalVideo().init();
+      },
       "/home-1": () => {
         new Home_BgVideo().init();
       },
       "/home-2": () => {
-        new Home_ExternalVideo().init();
-      },
-      "/home-3": () => {
         new Home_ExternalVideo().init();
       }
     };

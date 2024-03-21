@@ -10,7 +10,7 @@ import { RouteDispatcher } from "./routeDispatcher";
 
 // Global vars
 const SITE_NAME = 'Nimbus';
-const VERSION = 'v0.1.1';
+const VERSION = 'v0.1.2';
 
 // Global object
 window[SITE_NAME] = window[SITE_NAME] || {}; 
@@ -35,6 +35,11 @@ const init = () => {
 
     var routeDispatcher = new RouteDispatcher();
     routeDispatcher.routes = {
+        '/': () => { // Vimeo 
+
+            (new Home_ExternalVideo()).init();
+
+        }, 
         '/home-1': () => { // Background Videos
 
             (new Home_BgVideo()).init();
@@ -44,12 +49,7 @@ const init = () => {
 
             (new Home_ExternalVideo()).init();
 
-        }, 
-        '/home-3': () => { // Vimeo 
-
-            (new Home_ExternalVideo()).init();
-
-        }
+        } 
     };
     routeDispatcher.dispatchRoute(); 
 }

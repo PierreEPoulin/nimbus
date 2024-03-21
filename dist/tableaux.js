@@ -44,6 +44,7 @@
               src: [audioUrl],
               autoplay: false,
               preload: true,
+              loop: true,
               rate: 5,
               onload: function() {
                 howl.rate(1);
