@@ -4353,6 +4353,7 @@
             );
             if (video) {
               console.log("playing video");
+              video.currentTime = 0;
               video.play();
               makeItRainState.video = video;
             }

@@ -67,6 +67,7 @@ export class Home_ExternalVideo {
           // Stop any playing video
           if (makeItRainState.video) {
             makeItRainState.video.pause();
+            // Removed due to the lighting flash interaction freeze-frame
 //            makeItRainState.video.currentTime = 0; 
           }
 
@@ -119,6 +120,7 @@ export class Home_ExternalVideo {
           if (video) {
             // https://developer.chrome.com/blog/play-request-was-interrupted
             console.log("playing video");
+            video.currentTime = 0; // reset in case this is a second viewing 
             video.play();
 
             // Save as currently playing video so it can be stopped
