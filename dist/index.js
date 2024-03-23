@@ -4324,6 +4324,11 @@
             gsapWithCSS.to(elements, { display: "none" });
             if (makeItRainState.video) {
               makeItRainState.video.pause();
+              setTimeout(() => {
+                if (makeItRainState.video) {
+                  makeItRainState.video.currentTime = 0;
+                }
+              }, 5e3);
             }
             if (makeItRainState.currentItem.audioStart) {
               makeItRainState.currentItem.audioStart.stop();
@@ -4345,7 +4350,6 @@
             makeItRainState.currentItem = item;
             if (item.audioStart) {
               console.log("playing audio");
-              item.audioStart.seek(0);
               item.audioStart.play();
             }
             const video = this.getVideoElement(
@@ -4399,7 +4403,7 @@
 
   // src/index.ts
   var SITE_NAME = "Nimbus";
-  var VERSION = "v0.1.3";
+  var VERSION = "v0.1.4";
   window[SITE_NAME] = window[SITE_NAME] || {};
   var Site = window[SITE_NAME];
   var init4 = () => {

@@ -67,8 +67,14 @@ export class Home_ExternalVideo {
           // Stop any playing video
           if (makeItRainState.video) {
             makeItRainState.video.pause();
-            // Removed due to the lighting flash interaction freeze-frame
-//            makeItRainState.video.currentTime = 0; 
+            // Reset position after a 5000ms delay
+            // Done to ensure lighting interaction finishes, 
+            // but video is reset on second play. 
+            setTimeout(() => {
+              if (makeItRainState.video) {
+                makeItRainState.video.currentTime = 0;
+              }
+            }, 5000);
           }
 
           // Stop any playing audio
@@ -109,7 +115,7 @@ export class Home_ExternalVideo {
           // Play audio, if exists
           if(item.audioStart) {
             console.log("playing audio")
-            item.audioStart.seek(0);
+//            item.audioStart.seek(0);
             item.audioStart.play(); 
           }
 
