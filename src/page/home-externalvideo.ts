@@ -67,14 +67,15 @@ export class Home_ExternalVideo {
           // Stop any playing video
           if (makeItRainState.video) {
             makeItRainState.video.pause();
+            makeItRainState.video.currentTime = 0;
             // Reset position after a 5000ms delay
             // Done to ensure lighting interaction finishes, 
             // but video is reset on second play. 
-            setTimeout(() => {
-              if (makeItRainState.video) {
-                makeItRainState.video.currentTime = 0;
-              }
-            }, 5000);
+            // setTimeout(() => {
+            //   if (makeItRainState.video) {
+            //     makeItRainState.video.currentTime = 0;
+            //   }
+            // }, 5000);
           }
 
           // Stop any playing audio

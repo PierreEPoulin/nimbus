@@ -4324,11 +4324,7 @@
             gsapWithCSS.to(elements, { display: "none" });
             if (makeItRainState.video) {
               makeItRainState.video.pause();
-              setTimeout(() => {
-                if (makeItRainState.video) {
-                  makeItRainState.video.currentTime = 0;
-                }
-              }, 5e3);
+              makeItRainState.video.currentTime = 0;
             }
             if (makeItRainState.currentItem.audioStart) {
               makeItRainState.currentItem.audioStart.stop();
@@ -4403,7 +4399,7 @@
 
   // src/index.ts
   var SITE_NAME = "Nimbus";
-  var VERSION = "v0.1.4";
+  var VERSION = "v0.1.5";
   window[SITE_NAME] = window[SITE_NAME] || {};
   var Site = window[SITE_NAME];
   var init4 = () => {
