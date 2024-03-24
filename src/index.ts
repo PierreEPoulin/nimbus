@@ -10,7 +10,7 @@ import { RouteDispatcher } from "./routeDispatcher";
 
 // Global vars
 const SITE_NAME = 'Nimbus';
-const VERSION = 'v0.1.5';
+const VERSION = 'v0.1.6';
 
 // Global object
 window[SITE_NAME] = window[SITE_NAME] || {}; 
