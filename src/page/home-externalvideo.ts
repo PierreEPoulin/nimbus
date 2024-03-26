@@ -117,6 +117,8 @@ export class Home_ExternalVideo {
           if(item.audioStart) {
             console.log("playing audio")
 //            item.audioStart.seek(0);
+            // https://stackoverflow.com/questions/55026293/google-chrome-javascript-issue-in-getting-user-audio-the-audiocontext-was-not
+            // item.audioStart.resume();
             item.audioStart.play(); 
           }
 
